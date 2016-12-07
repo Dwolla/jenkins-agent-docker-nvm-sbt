@@ -12,7 +12,11 @@ COPY jenkins-agent /usr/local/bin/jenkins-agent
 COPY verify.sh /usr/local/bin/verify.sh
 
 RUN apt-get update && \
-    apt-get install -y curl bash git ca-certificates python make g++ && \
+    apt-get install -y curl bash git ca-certificates python make g++ apt-transport-https ca-certificates && \
+    apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
+    echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \
+    apt-get install -y docker-engine && \
     curl --create-dirs -sSLo ${JENKINS_AGENT}/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${AGENT_VERSION}/remoting-${AGENT_VERSION}.jar && \
     chmod 755 ${JENKINS_AGENT} && \
     chmod 644 ${JENKINS_AGENT}/agent.jar && \
@@ -34,8 +38,7 @@ ENV PATH=${SBT_HOME}/bin:${PATH}
 
 USER root
 
-RUN apt-get install git && \
-    curl -sL /tmp/sbt-${SBT_VERSION}.tgz "https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/sbt-${SBT_VERSION}.tgz" | \
+RUN curl -sL /tmp/sbt-${SBT_VERSION}.tgz "https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/sbt-${SBT_VERSION}.tgz" | \
     gunzip | tar -x -C /usr/local && \
     [ "0.13.13" = "${SBT_VERSION}" ] && mv /usr/local/sbt-launcher-packaging-${SBT_VERSION} /usr/local/sbt
 
