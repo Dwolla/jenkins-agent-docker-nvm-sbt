@@ -21,7 +21,7 @@ COPY fake-project $JENKINS_HOME/fake-project
 # apt-key loop inspired by https://github.com/nodejs/docker-node/issues/340#issuecomment-321669029
 RUN set -ex && \
     apt-get update && \
-    apt-get install -y curl bash git ca-certificates python python-pip make rake g++ apt-transport-https ca-certificates bc && \
+    apt-get install -y curl bash git ca-certificates python python-pip make rake g++ apt-transport-https ca-certificates bc jq && \
     for key in \
       58118E89F3A912897C070ADBF76221572C52609D \
     ; do \
@@ -46,12 +46,10 @@ RUN set -ex && \
 
 USER jenkins
 
-RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | /bin/bash
-
-RUN git config --global user.email "dev+jenkins@dwolla.com" && \
-    git config --global user.name "Jenkins Build Agent"
-
-RUN cd $JENKINS_HOME/fake-project && \
+RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | /bin/bash && \
+    git config --global user.email "dev+jenkins@dwolla.com" && \
+    git config --global user.name "Jenkins Build Agent" && \
+    cd $JENKINS_HOME/fake-project && \
     echo sbt.version=0.13.16 > project/build.properties && \
     sbt -Dsbt.log.noformat=true clean +compile && \
     echo sbt.version=${SBT_VERSION} > project/build.properties && \
