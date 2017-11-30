@@ -21,7 +21,7 @@ COPY fake-project $JENKINS_HOME/fake-project
 # apt-key loop inspired by https://github.com/nodejs/docker-node/issues/340#issuecomment-321669029
 RUN set -ex && \
     apt-get update && \
-    apt-get install -y curl bash git ca-certificates python python-pip make rake g++ apt-transport-https ca-certificates bc && \
+    apt-get install -y curl bash git ca-certificates python python-pip make rake g++ apt-transport-https ca-certificates bc jq && \
     for key in \
       58118E89F3A912897C070ADBF76221572C52609D \
     ; do \
