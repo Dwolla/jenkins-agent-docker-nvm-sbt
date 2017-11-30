@@ -46,12 +46,10 @@ RUN set -ex && \
 
 USER jenkins
 
-RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | /bin/bash
-
-RUN git config --global user.email "dev+jenkins@dwolla.com" && \
-    git config --global user.name "Jenkins Build Agent"
-
-RUN cd $JENKINS_HOME/fake-project && \
+RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | /bin/bash && \
+    git config --global user.email "dev+jenkins@dwolla.com" && \
+    git config --global user.name "Jenkins Build Agent" && \
+    cd $JENKINS_HOME/fake-project && \
     echo sbt.version=0.13.16 > project/build.properties && \
     sbt -Dsbt.log.noformat=true clean +compile && \
     echo sbt.version=${SBT_VERSION} > project/build.properties && \
