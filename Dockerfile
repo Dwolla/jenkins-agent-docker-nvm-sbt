@@ -15,7 +15,7 @@ COPY --from=sbt-cache /root/.ivy2 ${JENKINS_HOME}/.ivy2
 COPY --from=sbt-cache /root/.sbt ${JENKINS_HOME}/.sbt
 COPY --from=sbt-plugins-cache /root/.ivy2 ${JENKINS_HOME}/.ivy2
 COPY --from=sbt-plugins-cache /root/.sbt ${JENKINS_HOME}/.sbt
-COPY --from=jdk /usr/lib/jvm/java-8-openjdk-amd64 /usr/lib/jvm/java-8-openjdk-amd64
+COPY --from=jdk /usr/local/openjdk-8/ /usr/lib/jvm/java-8-openjdk-amd64
 
 USER root
 RUN chown -R jenkins ${JENKINS_HOME}
