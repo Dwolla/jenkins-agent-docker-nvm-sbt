@@ -1,4 +1,4 @@
-CORE_TAGS := sha-0f12b09-core-sha-d3e1fed-8u322-b06-jdk sha-0f12b09-core-sha-d3e1fed-11.0.14.1_1-jdk
+CORE_TAGS := sha-a9c907d-core-4.13.2-1-jdk8-7b03219 sha-a9c907d-core-4.13.2-1-jdk11-7b03219
 JOBS := $(addprefix core-,${CORE_TAGS})
 CHECK_JOBS := $(addprefix check-,${CORE_TAGS})
 CLEAN_JOBS := $(addprefix clean-,${CORE_TAGS})
