@@ -18,13 +18,6 @@ make \
     all
 ```
 
-```bash
-make \
-    NVM_JDK8_TAG=sha-e214a3c-core-sha-a9c907d-core-4.13.2-1-jdk8-7b03219 \
-    NVM_JDK11_TAG=sha-e214a3c-core-sha-a9c907d-core-4.13.2-1-jdk11-7b03219 \
-    all
-```
-
 Alternatively, without [yq](https://kislyuk.github.io/yq/) installed, refer to the NVM_TAG default values defined in [jenkins-agents-workflow](https://github.com/Dwolla/jenkins-agents-workflow/blob/main/.github/workflows/build-docker-image.yml) and run the following command:
 
-`make NVM_JDK11_TAG=<default-jdk-11-tag-from-jenkins-agents-workflow> NVM_JDK8_TAG=<default-jdk-8-tag-from-jenkins-agents-workflow> all`
+`make NVM_JDK11_TAG=<default-nvm-jdk11-tag-from-jenkins-agents-workflow> NVM_JDK8_TAG=<default-nvm-jdk8-tag-from-jenkins-agents-workflow> all`
