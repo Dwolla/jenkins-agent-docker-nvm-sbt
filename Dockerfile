@@ -1,7 +1,7 @@
-ARG CORE_TAG
+ARG NVM_TAG
 
 FROM dwolla/sbt-version-cache AS sbt-cache
-FROM dwolla/jenkins-agent-nvm:$CORE_TAG
+FROM dwolla/jenkins-agent-nvm:$NVM_TAG
 LABEL maintainer="Dwolla Dev <dev+jenkins-nvm-sbt@dwolla.com>"
 LABEL org.label-schema.vcs-url="https://github.com/Dwolla/jenkins-agent-docker-nvm-sbt"
 
