@@ -7,16 +7,25 @@ on:
     tags: [v*]
 
 jobs:
-  build:
-    uses: Dwolla/jenkins-agents-workflow/.github/workflows/build-docker-image.yml@main
+  build-jdk11:
+    uses: Dwolla/jenkins-agents-workflow/.github/workflows/build-docker-image.yml@JDK8
     with:
       IMAGE_NAME: dwolla/jenkins-agent-nvm-sbt
-      TAG_NAME: NVM_TAG_JDK8_JDK11
+      TAG_NAME: NVM_TAG
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  build-jdk8:
+    uses: Dwolla/jenkins-agents-workflow/.github/workflows/build-docker-image.yml@JDK8
+    with:
+      IMAGE_NAME: dwolla/jenkins-agent-nvm-sbt
+      TAG_NAME: NVM_TAG_JDK8
+      PLATFORMS: linux/amd64
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
   build-complete:
-    needs: build
+    needs: [build-jdk8, build-jdk11]
     runs-on: ubuntu-latest
     steps:
       - run: echo "The build completed successfully"
