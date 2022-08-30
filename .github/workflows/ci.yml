@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    uses: Dwolla/jenkins-agents-workflow/.github/workflows/build-docker-image.yml@main
+    uses: Dwolla/jenkins-agents-workflow/.github/workflows/build-docker-image.yml@JDK8
     with:
       IMAGE_NAME: dwolla/jenkins-agent-nvm-sbt
       TAG_NAME: NVM_TAG_JDK8_JDK11
