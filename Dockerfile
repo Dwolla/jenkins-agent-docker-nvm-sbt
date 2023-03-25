@@ -14,6 +14,10 @@ COPY --from=sbt-cache /root/.cache/coursier ${JENKINS_HOME}/.cache/coursier
 COPY --from=sbt-cache /root/.ivy2 ${JENKINS_HOME}/.ivy2
 COPY --from=sbt-cache /root/.sbt ${JENKINS_HOME}/.sbt
 
+RUN export SDKMAN_DIR="${JENKINS_HOME}/.sdkman" && curl -s "https://get.sdkman.io" | bash
+
+RUN chown -R jenkins:jenkins "${JENKINS_HOME}/.sdkman"
+
 USER root
 RUN chown -R jenkins ${JENKINS_HOME}
 
