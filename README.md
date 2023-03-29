@@ -11,11 +11,11 @@ With [yq](https://kislyuk.github.io/yq/) installed, to build this image locally 
 
 ```bash
 make \
-    NVM_JDK11_TAG=$(curl --silent https://raw.githubusercontent.com/Dwolla/jenkins-agents-workflow/main/.github/workflows/build-docker-image.yml | \
-        yq -r .jobs.\"build-nvm-matrix\".strategy.matrix.TAG | yq '.[] | select (test(".*?jdk11.*?"))') \
-all
+    NVM_TAG=$( curl --silent https://raw.githubusercontent.com/Dwolla/jenkins-agents-workflow/main/.github/workflows/build-docker-image.yml | \
+        yq .on.workflow_call.inputs.NVM_TAG.default) \
+    all
 ```
 
 Alternatively, without [yq](https://kislyuk.github.io/yq/) installed, refer to the NVM_TAG default values defined in [jenkins-agents-workflow](https://github.com/Dwolla/jenkins-agents-workflow/blob/main/.github/workflows/build-docker-image.yml) and run the following command:
 
-`make NVM_JDK11_TAG=<default-nvm-jdk11-tag-from-jenkins-agents-workflow> all`
+`make NVM_TAG=<default-nvm-tag-from-jenkins-agents-workflow> all`
