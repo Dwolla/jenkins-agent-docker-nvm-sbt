@@ -6,15 +6,32 @@ on:
     branches: ['**']
     tags: [v*]
 
+env:
+  # One nvm image for every variant, on the Java 21 core: the agent runs on its Java 21 (PLT-2159)
+  NVM_TAG: 3395.v6e5377b_0fb_3c-5-jdk21-df5d94a-e7bb0a9
+
 jobs:
   build:
-    uses: Dwolla/jenkins-agents-workflow/.github/workflows/build-docker-image.yml@main
-    with:
-      IMAGE_NAME: dwolla/jenkins-agent-nvm-sbt
-      TAG_NAME: NVM_TAG
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    strategy:
+      matrix:
+        include:
+          # The build JDK each label promises, pinned by digest
+          - build_jdk: 11
+            build_jdk_image: eclipse-temurin:11-jdk@sha256:9d369f804a33762f34b24cd9d1b9722fd810c16001da58bd63d0919f19a712c3
+          - build_jdk: 17
+            build_jdk_image: eclipse-temurin:17-jdk@sha256:7a0b2bc7e1372bb05ee361fb79e8a9e822df47343b8716253b3bbaa75060653e
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Push Docker Image
+        uses: Dwolla/jenkins-agents-workflow/.github/actions/build@main
+        with:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          BASE_TAG: ${{ env.NVM_TAG }}
+          TAG_NAME: NVM_TAG
+          EXTRA_BUILD_ARGS: BUILD_JDK_IMAGE=${{ matrix.build_jdk_image }}
+          TAG_PREFIX: ${{ env.NVM_TAG }}-build-jdk${{ matrix.build_jdk }}
+          IMAGE_NAME: dwolla/jenkins-agent-nvm-sbt
   build-complete:
     needs: build
     runs-on: ubuntu-latest
